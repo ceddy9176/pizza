@@ -12,7 +12,7 @@ function Address(street, city, state) {
 }
 
 
-Pizza.prototype.price = function () {
+Pizza.prototype.price = function() {
   var pizzaPrice = 0;
 
   if (this.pizzaSize === "medium"){
@@ -22,13 +22,13 @@ Pizza.prototype.price = function () {
   } else if (this.pizzaSize === "x-large") {
     pizzaPrice += 20;
   }
-  for (var index = 2; index < this.toppings.length; index++) {
-    pizzaPrice += 1;
+  for (var index = 3; index < this.toppings.length; index += 1) {
+    pizzaPrice += 1.5;
   }
   return pizzaPrice;
 }
 
-Address.prototype.format = function () {
+Address.prototype.format = function() {
   return "Your pizza will be deliverd to:" + this.street + ", " + this.city + ", " + this.state;
 }
 
@@ -60,8 +60,8 @@ $(document).ready(function(){
       var userSize = $("input:radio[name=sizeSelection]:checked").val();
       var pizzaOrder = new Pizza(userSize);
       $("input:checkbox[name=toppings]:checked").each(function(){
-        var newTopings = $(this).val();
-        pizzaOrder.toppings.push(newTopings);
+        var newToppings = $(this).val();
+        pizzaOrder.toppings.push(newToppings);
         });
       var pizzaOrderPrice = pizzaOrder.price();
 
