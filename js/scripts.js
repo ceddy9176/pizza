@@ -1,6 +1,4 @@
 // business logic
-var finalOrderPrice = 0;
-var pizzaNumber = 0;
 
 function Pizza(pizzaSize) {
   this.pizzaSize = pizzaSize;
@@ -13,12 +11,6 @@ function Address(street, city, state) {
   this.state = state;
 }
 
-function optionChosen() {
-  $("#mainInfo").show();
-  $("#addPizza").show();
-  $("#options").hide();
-  $("#userInput").show();
-}
 
 Pizza.prototype.price = function () {
   var pizzaPrice = 0;
@@ -30,7 +22,7 @@ Pizza.prototype.price = function () {
   } else if (this.pizzaSize === "x-large") {
     pizzaPrice += 20;
   }
-  for (var index = 2; index < this.toppings.length; index += 1) {
+  for (var index = 2; index < this.toppings.length; index++) {
     pizzaPrice += 1;
   }
   return pizzaPrice;
@@ -38,6 +30,16 @@ Pizza.prototype.price = function () {
 
 Address.prototype.format = function () {
   return "Your pizza will be deliverd to:" + this.street + ", " + this.city + ", " + this.state;
+}
+
+var finalOrderPrice = 0;
+var pizzaNumber = 0;
+
+function optionChosen() {
+  $("#mainInfo").show();
+  $("#addPizza").show();
+  $("#options").hide();
+  $("#userInput").show();
 }
 
 // user interface logic
@@ -50,5 +52,46 @@ $(document).ready(function(){
     });
     $("#pickUp").click(function() {
       optionChosen();
+    });
+
+    $("form").submit(function(event){
+      event.preventDefault();
+
+      var userSize = $("input:radio[name=sizeSelection]:checked").val();
+      var pizzaOrder = new Pizza(userSize);
+      $("input:checkbox[name=toppings]:checked").each(function(){
+        var newTopings = $(this).val();
+        pizzaOrder.toppings.push(newTopings);
+        });
+      var pizzaOrderPrice = pizzaOrder.price();
+
+      $("#pizzas ul").append("<li><span class='newPizza'>" + pizzaOrder.pizzaSize + " pizza with " + pizzaOrder.toppings.length + " topping('s): $" + pizzaOrderPrice + "</span></li>");
+      $("#subtotal").show();
+
+      finalOrderPrice += pizzaOrderPrice;
+      pizzaNumber += 1;
+      $(".total").text(finalOrderPrice);
+      $("#orderSummary").show();
+      $("#finalOrder").show();
+
+      $(".newPizza").last().click(function(){
+        $("#extraInfo").show();
+        $(".topping").text(pizzaOrder.toppings);
+      });
+
+      $("input[type=checkbox]").prop("checked", false);
+      $("input[type=checkbox]").prop("checked", function(){
+        return this.getAttribute("checked") === "checked";
+      });
+    });
+
+    $("#finalOrder").click(function(){
+      var street = $("#street").val();
+      var city = $("#city").val();
+      var state = $("#state").val();
+      var userAddress = new Address(street, city, state);
+      var userName = $("#name").val();
+      console.log(userName);
+
     });
 });
