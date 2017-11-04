@@ -10,7 +10,7 @@ _User selects pizza size and toppings for as many pizzas they want. The price in
 
 ## Setup/Installation Requirements
 
- View here: http://www.ceddy9176.github.io/pizza
+ View here: https://www.ceddy9176.github.io/pizza
 
 1. Clone this repo https://github.com/ceddy9176/pizza
 
